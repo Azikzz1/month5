@@ -1,6 +1,23 @@
 from rest_framework import generics
-from .models import Director, Movie, Review
-from .serializers import DirectorSerializer, MovieSerializer, ReviewSerializer
+from django.db.models import Count, Avg
+from .models import Director, Movie
+from .serializers import DirectorSerializer, MovieSerializer
+
+
+class DirectorListWithMovieCount(generics.ListAPIView):
+    queryset = Director.objects.annotate(movies_count=Count('movies'))
+    serializer_class = DirectorSerializer
+
+
+class MovieReviewList(generics.ListAPIView):
+    queryset = Movie.objects.prefetch_related('reviews').annotate(
+        rating=Avg('reviews__stars')
+    )
+    serializer_class = MovieSerializer
+
+
+from .models import Review
+from .serializers import ReviewSerializer
 
 
 class DirectorList(generics.ListCreateAPIView):

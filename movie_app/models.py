@@ -10,6 +10,7 @@ class Director(models.Model):
 
 
 class Movie(models.Model):
+    objects = None
     title = models.CharField(max_length=100)
     description = models.TextField()
     duration = models.IntegerField()
@@ -22,6 +23,7 @@ class Movie(models.Model):
 class Review(models.Model):
     text = models.TextField()
     movie = models.ForeignKey(Movie, related_name='reviews', on_delete=models.CASCADE)
+    stars = models.IntegerField(default=1)
 
     def __str__(self):
         return f'Review for {self.movie.title}'
