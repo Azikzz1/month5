@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import DirectorList, DirectorDetail, \
-    MovieList, MovieDetail, ReviewList, ReviewDetail, MovieReviewList, DirectorListWithMovieCount
+from .views import DirectorList, DirectorDetail, MovieList, MovieDetail, ReviewList, ReviewDetail, MovieReviewList, DirectorListWithMovieCount
 
 urlpatterns = [
     path('api/v1/directors/', DirectorList.as_view(), name='director-list'),
