@@ -1,3 +1,4 @@
+
 from rest_framework import serializers
 from .models import Director, Movie, Review
 
@@ -38,3 +39,11 @@ class ReviewSerializer(serializers.ModelSerializer):
         if value < 1 or value > 5:
             raise serializers.ValidationError("Stars must be between 1 and 5.")
         return value
+
+
+class UserSerializer:
+    pass
+
+
+class UserConfirmationSerializer:
+    pass
