@@ -1,10 +1,10 @@
 from django.db import models
 import random
 import string
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class Director(models.Model):
-    objects = None
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -22,7 +22,6 @@ class Movie(models.Model):
 
 
 class Review(models.Model):
-    objects = None
     text = models.TextField()
     movie = models.ForeignKey(Movie, related_name='reviews', on_delete=models.CASCADE)
     stars = models.IntegerField(default=1)
@@ -31,28 +30,17 @@ class Review(models.Model):
         return f'Review for {self.movie.title}'
 
 
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.db import models
-
-
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
             raise ValueError('Users must have an email address')
-
-        user = self.model(
-            email=self.normalize_email(email),
-        )
-
+        user = self.model(email=self.normalize_email(email))
         user.set_password(password)
         user.save(using=self._db)
         return user
 
     def create_superuser(self, email, password=None):
-        user = self.create_user(
-            email,
-            password=password,
-        )
+        user = self.create_user(email, password=password)
         user.is_admin = True
         user.save(using=self._db)
         return user

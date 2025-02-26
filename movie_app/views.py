@@ -1,7 +1,6 @@
-# movie_app/views.py
 from rest_framework import generics, status
-from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from django.db.models import Count, Avg
 
@@ -74,7 +73,7 @@ class ConfirmUser(generics.GenericAPIView):
         try:
             user = User.objects.get(email=email, confirmation_code=confirmation_code)
             user.is_active = True
-            user.confirmation_code = ''
+            user.confirmation_code = ''  # Убираем код после подтверждения
             user.save()
             return Response({'message': 'User confirmed'}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
@@ -88,6 +87,7 @@ class LoginUser(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         email = request.data.get('email')
         password = request.data.get('password')
+
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
